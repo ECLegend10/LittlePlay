@@ -1,6 +1,6 @@
 # Put Little Play on GitHub
 
-This folder contains the Little Play project source. Its current hosting configuration is for the existing ChatGPT Site; a GitHub repository is source control and does not automatically change that Site or deploy it elsewhere.
+This folder contains the Little Play project source. It is configured for Next.js on Vercel. After pushing to GitHub, follow [VERCEL_SETUP.md](VERCEL_SETUP.md) to configure services and deploy.
 
 ## Create the private repository
 
