@@ -46,6 +46,3 @@ next-env.d.ts
 /work/
 
 *.tsbuildinfo
-
-# Documented placeholders, never real credentials.
-!.env.example
