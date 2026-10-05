@@ -1,3 +1,11 @@
+# Current workflow documentation
+
+- [Branching and release](BRANCHING_AND_RELEASE.md)
+- [Vercel setup](VERCEL_SETUP.md)
+- [Migration status](MIGRATION_STATUS.md)
+
+On transition/master, use VERCEL_SETUP.md rather than the historical clean-rebuild instructions below.
+
 # LittlePlay Next.js Rebuild Documentation
 
 This folder defines how to reproduce the existing LittlePlay application as a maintainable Next.js application.

@@ -1,23 +1,25 @@
 # LittlePlay
 
-LittlePlay is a responsive, multilingual party-game hub with nine playable modules, light/dark themes, optional sound effects, a quiz-only sharing mode, and an owner-only administration area.
+A multilingual activity room with nine games, light/dark themes, sound effects, quiz sharing and owner-only administration.
 
-The current hosted implementation uses Next.js through Vinext and Cloudflare. The documents in [`docs/`](docs/) are the source of truth for rebuilding the same product as a clean, native Next.js App Router application while preserving its visual design, routes, modules, and behaviour.
+## Branch workflow
 
-## Documentation
+`develop -> release-X.Y.Z -> transition -> master`
 
-- [Documentation index](docs/README.md)
-- [Product and technical requirements](docs/REQUIREMENTS.md)
-- [Prerequisites](docs/PREREQUISITES.md)
-- [Setup guide](docs/SETUP.md)
-- [Development guide](docs/DEVELOPMENT.md)
-- [Design, layout, and module parity specification](docs/DESIGN_AND_MODULE_SPEC.md)
+- **develop**: Sites/Cloudflare development and source sync.
+- **release-X.Y.Z**: frozen source snapshot.
+- **transition**: persistent Vercel migration/validation branch.
+- **master**: validated native Next.js production-target code.
 
-## Current production site
+This branch uses native Next.js on Node 24.x with Neon Postgres, Vercel Blob and verified Google authentication. Cloud accounts and live data are configured separately; nothing is deployed merely by this repository migration.
 
-<https://little-play-win.elwinchankw.chatgpt.site>
+Read [branch policy](docs/BRANCHING_AND_RELEASE.md), [Vercel setup](docs/VERCEL_SETUP.md), [migration status](docs/MIGRATION_STATUS.md) and [AGENTS.md](AGENTS.md).
 
-## Non-negotiable rebuild rule
+```sh
+pnpm install --frozen-lockfile
+pnpm dev
+```
 
-The rebuild may improve the internal component architecture, typing, testing, and deployment portability. It must not redesign the interface or change user-facing behaviour unless a separate change request explicitly approves it.
+Copy .env.example to .env.local and configure services for backend functionality. Without credentials public games can render, but database APIs report unavailable and admin access stays closed.
 
+The original [Sites publication](https://little-play-win.elwinchankw.chatgpt.site) remains separate. Its existing design specification is in [docs/DESIGN_AND_MODULE_SPEC.md](docs/DESIGN_AND_MODULE_SPEC.md). Other existing rebuild documents are historical guidance; VERCEL_SETUP.md is authoritative for setup on transition/master.

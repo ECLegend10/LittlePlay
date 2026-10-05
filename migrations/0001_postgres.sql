@@ -1,0 +1,12 @@
+CREATE TABLE IF NOT EXISTS quizzes (
+  id TEXT PRIMARY KEY, data JSONB NOT NULL,
+  revision INTEGER NOT NULL DEFAULT 1 CHECK (revision > 0), updated_by TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS spy_vault (
+  id TEXT PRIMARY KEY, data JSONB NOT NULL,
+  revision INTEGER NOT NULL DEFAULT 1 CHECK (revision > 0), updated_by TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS site_settings (
+  id TEXT PRIMARY KEY, data JSONB NOT NULL,
+  revision INTEGER NOT NULL DEFAULT 1 CHECK (revision > 0), updated_by TEXT NOT NULL
+);

@@ -1,4 +1,5 @@
-import {admin,db,json,sameOrigin} from '../../../../lib/quiz';
+import { writeDocument } from '../../../../lib/documents';
+import {admin,json,sameOrigin} from '../../../../lib/quiz';
 import {readVault,validWords} from '../../../../lib/spy';
 export const dynamic='force-dynamic';
 export async function GET(){
@@ -14,10 +15,8 @@ export async function PUT(req:Request){
   let body;try{body=JSON.parse(raw)}catch{return json({error:'invalid'},400)}
   if(!body||!validWords(body.words)||!Number.isInteger(body.revision)||body.revision<0)return json({error:'invalid'},400);
   const {words,revision}=body;
-  const statement=revision===0
-   ?db().prepare('INSERT INTO spy_vault (id, data, revision, updated_by) VALUES (?, ?, 1, ?) ON CONFLICT(id) DO NOTHING').bind('main',JSON.stringify(words),user.userId)
-   :db().prepare('UPDATE spy_vault SET data = ?, revision = revision + 1, updated_by = ? WHERE id = ? AND revision = ?').bind(JSON.stringify(words),user.userId,'main',revision);
-  const result=await statement.run();if(!result.meta.changes)return json({error:'conflict'},409);
+  const next=await writeDocument('spy_vault',words,revision,user.userId);
+ if(next===null)return json({error:'conflict'},409);
   return json({revision:revision+1});
  }catch(e){console.error(e);return json({error:'unavailable'},503)}
 }

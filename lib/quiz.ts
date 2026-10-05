@@ -1,13 +1,15 @@
-import { env } from 'cloudflare:workers';
-import { getChatGPTUser } from '../app/chatgpt-auth';
+import { currentOwner } from './auth';
+import { readDocument } from './documents';
 export const locales = ['en', 'cn', 'bm'] as const;
 export type LocalText = Record<'en'|'cn'|'bm', string>;
 export type Quiz = { published:boolean; title:LocalText; intro:LocalText; image:string; questions:{id:string; text:LocalText; image:string; options:LocalText[]; correct:number; explanation:LocalText}[] };
 const blank = ():LocalText => ({en:'',cn:'',bm:''});
 export function emptyQuiz():Quiz { return {published:false,title:{en:'A little quiz',cn:'趣味小测验',bm:'Kuiz santai'},intro:blank(),image:'',questions:Array.from({length:5},(_,i)=>({id:`q${i+1}`,text:blank(),image:'',options:Array.from({length:4},blank),correct:0,explanation:blank()}))}; }
-export async function admin() { const u=await getChatGPTUser(); return u?.email.toLowerCase()==='elwinchankw@gmail.com' ? u : null; }
-export function db(){ if(!env.DB) throw new Error('Database unavailable'); return env.DB; }
-export async function readQuiz(){ const r=await db().prepare('SELECT data, revision FROM quizzes WHERE id = ?').bind('main').first<{data:string;revision:number}>(); return {quiz:r?JSON.parse(r.data) as Quiz:emptyQuiz(),revision:r?.revision||0}; }
+export const admin = currentOwner;
+export async function readQuiz() {
+ const {data, revision} = await readDocument('quizzes', emptyQuiz());
+ return {quiz:data, revision};
+}
 export function validQuiz(q:unknown):q is Quiz {
  const text=(v:unknown):v is LocalText=>{if(!v||typeof v!=='object')return false;const value=v as Record<string,unknown>;return locales.every(l=>typeof value[l]==='string'&&value[l].length<=4000)};
  const image=(v:unknown):v is string=>typeof v==='string'&&(v===''||/^\/api\/images\/[a-f0-9-]+\.(png|jpg|webp)$/.test(v));

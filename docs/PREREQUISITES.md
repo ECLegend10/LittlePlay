@@ -47,7 +47,7 @@ Do not tie admin authorization to a client-side flag. The server must validate t
 - Database provider.
 - Image-storage provider.
 - Authentication provider.
-- Production administrator email. The current owner allowlist is `elwinchankw@gmail.com`.
+- Production administrator email. Set the intended owner in server-only `ADMIN_EMAIL`.
 - Whether quiz and game settings require audit history beyond the current optimistic revision number.
 
 ## Required assets
@@ -64,7 +64,7 @@ Use only the variables required by the selected adapters. A provider-neutral exa
 
 ```dotenv
 NEXT_PUBLIC_APP_URL=http://localhost:3000
-ADMIN_EMAIL=elwinchankw@gmail.com
+ADMIN_EMAIL=
 
 DATABASE_URL=
 

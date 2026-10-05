@@ -1,4 +1,10 @@
-import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
-export const quizzes = sqliteTable('quizzes', { id: text('id').primaryKey(), data: text('data').notNull(), revision: integer('revision').notNull().default(1), updatedBy: text('updated_by').notNull() });
-export const spyVault = sqliteTable('spy_vault', { id: text('id').primaryKey(), data: text('data').notNull(), revision: integer('revision').notNull().default(1), updatedBy: text('updated_by').notNull() });
-export const siteSettings = sqliteTable('site_settings', { id: text('id').primaryKey(), data: text('data').notNull(), revision: integer('revision').notNull().default(1), updatedBy: text('updated_by').notNull() });
+import { pgTable, text, integer, jsonb } from 'drizzle-orm/pg-core';
+const columns = () => ({
+  id: text('id').primaryKey(),
+  data: jsonb('data').notNull(),
+  revision: integer('revision').notNull().default(1),
+  updatedBy: text('updated_by').notNull(),
+});
+export const quizzes = pgTable('quizzes', columns());
+export const spyVault = pgTable('spy_vault', columns());
+export const siteSettings = pgTable('site_settings', columns());

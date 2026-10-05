@@ -1,4 +1,5 @@
-import { db, locales, type LocalText } from './quiz';
+import { readDocument } from './documents';
+import { locales, type LocalText } from './quiz';
 export type SpyWord = { id: string; text: LocalText; enabled: boolean };
 export const seedWords: SpyWord[] = [
  ['Mooncake','月饼','Kuih bulan'],['Lantern','灯笼','Tanglung'],['Durian','榴莲','Durian'],['Laksa','叻沙','Laksa'],
@@ -9,9 +10,10 @@ export const seedWords: SpyWord[] = [
  ['Guitar','吉他','Gitar'],['Birthday cake','生日蛋糕','Kek hari jadi'],['Rainbow','彩虹','Pelangi'],['Fireworks','烟花','Bunga api'],
 ].map(([en,cn,bm],i)=>({id:`starter-${i+1}`,text:{en,cn,bm},enabled:true}));
 export async function readVault(){
- const row=await db().prepare('SELECT data, revision FROM spy_vault WHERE id = ?').bind('main').first<{data:string;revision:number}>();
- return {words:row?JSON.parse(row.data) as SpyWord[]:seedWords,revision:row?.revision??0};
+ const {data,revision} = await readDocument('spy_vault', seedWords);
+ return {words:data,revision};
 }
+
 export function validWords(value:unknown):value is SpyWord[]{
  if(!Array.isArray(value)||value.length>300)return false;
  const ids=new Set<string>();

@@ -17,7 +17,7 @@ LittlePlay is a mobile-first collection of lightweight social games. Visitors ca
 ### Administrator
 
 - Must be authenticated.
-- Must match the server-side email allowlist; initially `elwinchankw@gmail.com` only.
+- Must match the server-side email allowlist; only the configured `ADMIN_EMAIL` owner.
 - Has a distinct admin navigation and dashboard.
 - Can enable or disable modules.
 - Can edit the This or That pool in all three languages.

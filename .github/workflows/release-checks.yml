@@ -1,0 +1,49 @@
+name: LittlePlay release checks
+on:
+  push:
+    branches: [transition, master]
+  pull_request:
+    branches: [transition, master]
+permissions:
+  contents: read
+concurrency:
+  group: littleplay-checks-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  release-source:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require same-repository transition for master PRs
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BASE_BRANCH: ${{ github.base_ref }}
+          HEAD_BRANCH: ${{ github.head_ref }}
+          HEAD_REPO: ${{ github.event.pull_request.head.repo.full_name }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          if [ "$EVENT_NAME" = "pull_request" ] && [ "$BASE_BRANCH" = "master" ]; then
+            test "$HEAD_BRANCH" = "transition" && test "$HEAD_REPO" = "$REPOSITORY"
+          fi
+  vercel-ready:
+    needs: release-source
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      NEXT_TELEMETRY_DISABLED: 1
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.25.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm check:vercel
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm test
+      - run: pnpm build
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm test:e2e

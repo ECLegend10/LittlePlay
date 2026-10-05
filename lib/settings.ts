@@ -1,4 +1,5 @@
-import { db, locales, type LocalText } from './quiz';
+import { readDocument } from './documents';
+import { locales, type LocalText } from './quiz';
 
 export const moduleIds = ['coin','cards','slides','wheel','either','quiz','rps','spy','timer'] as const;
 export type ModuleId = typeof moduleIds[number];
@@ -26,8 +27,8 @@ export const defaultSettings:SiteSettings={
 };
 
 export async function readSettings(){
-  const row=await db().prepare('SELECT data, revision FROM site_settings WHERE id = ?').bind('main').first<{data:string;revision:number}>();
-  return {settings:row?JSON.parse(row.data) as SiteSettings:defaultSettings,revision:row?.revision??0};
+ const {data,revision} = await readDocument('site_settings', defaultSettings);
+ return {settings:data,revision};
 }
 
 export function validSettings(value:unknown):value is SiteSettings{

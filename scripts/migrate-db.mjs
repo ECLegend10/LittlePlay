@@ -1,0 +1,10 @@
+import nextEnv from '@next/env';
+const { loadEnvConfig } = nextEnv;
+import { neon } from '@neondatabase/serverless';
+import { readFile } from 'node:fs/promises';
+loadEnvConfig(process.cwd());
+if (!process.env.DATABASE_URL) throw new Error('Set DATABASE_URL before running db:migrate');
+const sql = neon(process.env.DATABASE_URL);
+const source = await readFile(new URL('../migrations/0001_postgres.sql', import.meta.url), 'utf8');
+await sql.transaction(source.split(';').map(s => s.trim()).filter(Boolean).map(s => sql.query(s)));
+console.log('Postgres tables ready. Existing records were preserved.');
