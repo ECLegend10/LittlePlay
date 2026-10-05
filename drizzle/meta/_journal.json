@@ -15,6 +15,13 @@
       "when": 1790178452687,
       "tag": "0001_pretty_fallen_one",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1790989635965,
+      "tag": "0002_flawless_wild_child",
+      "breakpoints": true
     }
   ]
 }

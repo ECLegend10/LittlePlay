@@ -9,8 +9,8 @@ export async function admin() { const u=await getChatGPTUser(); return u?.email.
 export function db(){ if(!env.DB) throw new Error('Database unavailable'); return env.DB; }
 export async function readQuiz(){ const r=await db().prepare('SELECT data, revision FROM quizzes WHERE id = ?').bind('main').first<{data:string;revision:number}>(); return {quiz:r?JSON.parse(r.data) as Quiz:emptyQuiz(),revision:r?.revision||0}; }
 export function validQuiz(q:unknown):q is Quiz {
- const text=(v:any)=>v&&locales.every(l=>typeof v[l]==='string'&&v[l].length<=4000);
- const image=(v:any)=>typeof v==='string'&&(v===''||/^\/api\/images\/[a-f0-9-]+\.(png|jpg|webp)$/.test(v));
+ const text=(v:unknown):v is LocalText=>{if(!v||typeof v!=='object')return false;const value=v as Record<string,unknown>;return locales.every(l=>typeof value[l]==='string'&&value[l].length<=4000)};
+ const image=(v:unknown):v is string=>typeof v==='string'&&(v===''||/^\/api\/images\/[a-f0-9-]+\.(png|jpg|webp)$/.test(v));
  const a=q as Quiz;
  return !!a&&typeof a.published==='boolean'&&text(a.title)&&text(a.intro)&&image(a.image)&&Array.isArray(a.questions)&&a.questions.length===5&&a.questions.every((v,i)=>v.id===`q${i+1}`&&text(v.text)&&image(v.image)&&Array.isArray(v.options)&&v.options.length>=2&&v.options.length<=4&&v.options.every(text)&&Number.isInteger(v.correct)&&v.correct>=0&&v.correct<v.options.length&&text(v.explanation))&&(!a.published||locales.every(l=>a.title[l].trim()&&a.questions.every(v=>v.text[l].trim()&&v.options.every(o=>o[l].trim()))));
 }
