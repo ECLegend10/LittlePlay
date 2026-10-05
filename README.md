@@ -21,3 +21,9 @@ The current hosted implementation uses Next.js through Vinext and Cloudflare. Th
 
 The rebuild may improve the internal component architecture, typing, testing, and deployment portability. It must not redesign the interface or change user-facing behaviour unless a separate change request explicitly approves it.
 
+
+## Branching and release
+
+Workflow: `develop → release-X.Y.Z → transition → master`.
+
+This branch remains the Sites / Cloudflare development and synchronization target. Preserve GitHub-owned policy/configuration files during source sync. See [branching and release policy](docs/BRANCHING_AND_RELEASE.md) and [repository instructions](AGENTS.md). Vercel Git deployments are disabled on this branch.
