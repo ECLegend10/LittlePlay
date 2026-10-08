@@ -3,7 +3,7 @@ import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import * as icons from 'lucide-react';
 import { writeFileSync, readFileSync } from 'node:fs';
-const names=['Coins','Layers','Presentation','Disc3','ArrowLeftRight','CircleHelp','Scissors','Fingerprint','Vault','Settings2','LayoutGrid','Sun','Moon','Menu','X','RotateCcw','ChevronLeft','ChevronRight','ArrowRight','ArrowUpRight','Plus','Check','Copy','Expand','ChevronDown','Trash2','LockKeyhole','HandFist','Hand','Sparkles','TimerReset','LayoutDashboard','SlidersHorizontal','Gamepad2','ShieldCheck','Volume2','VolumeX'];
+const names=['Coins','Layers','Presentation','Disc3','ArrowLeftRight','CircleHelp','Scissors','Fingerprint','Vault','Settings2','LayoutGrid','Sun','Moon','Menu','X','RotateCcw','ChevronLeft','ChevronRight','ArrowRight','ArrowUpRight','Plus','Check','Copy','Expand','ChevronDown','Trash2','LockKeyhole','HandFist','Hand','Sparkles','TimerReset','LayoutDashboard','SlidersHorizontal','Gamepad2','ShieldCheck','Volume2','VolumeX','Music2','Eye','ExternalLink'];
 const symbols=names.map(name=>{
  if(!icons[name])throw Error(`Missing Lucide icon: ${name}`);
  const svg=renderToStaticMarkup(createElement(icons[name],{strokeWidth:1.8}));

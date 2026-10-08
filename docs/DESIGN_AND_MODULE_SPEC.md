@@ -110,14 +110,17 @@ Do not replace this with glassmorphism, gradients, Tailwind defaults, sharp card
 
 - Coin: large centered circular coin, result heading, primary flip button, counters separated by a top border.
 - Cards: five-card row, responsive card sizes, purple facedown treatment, red hearts/diamonds.
-- Slides: 16:9 pastel slide inside a raised viewer, dots and arrow controls below.
+- Slides: one active administrator-selected deck. Image decks use a 16:9 raised viewer with dots and arrow controls; PDF decks use a responsive embedded viewer with a separate-open fallback.
 - Wheel: two-column desktop layout with canvas left and textarea right; one column on mobile.
 - This or That: two large equal choice panels; stack only on very narrow screens.
 - Quiz: centered maximum 850 px card, two-column answers where space allows, green/red feedback blocks.
 - RPS: three equal move controls, private handover stage, two-column result reveal.
 - Spy: centered maximum 800 px panel, private-role card, name/vote grids, no hidden secret left in the DOM.
 - Hit the Mark: centered maximum 680 px panel; target above a large tabular stopwatch.
-- Admin: three dashboard cards; settings use raised editor sections and sticky action rows where practical.
+- Admin: responsive dashboard-card grid; settings use raised editor sections and sticky action rows where practical.
+- Private admin wheel: same canvas and result presentation as the public wheel, with a separate responsive configuration panel. Probability values exist only in that owner-only editor and never on the canvas.
+- Wheel-only presentation: viewport-centered wheel, result, and spin button only. The local admin mode includes one unobtrusive exit control; the separate `/wheel-only` route contains no editor or navigation.
+- Slide manager: raised deck cards with three localized title fields, active-deck selection, image thumbnails/reordering, or one PDF upload.
 
 ## 8. Motion and audio
 
@@ -126,7 +129,10 @@ Do not replace this with glassmorphism, gradients, Tailwind defaults, sharp card
 - Wheel uses a multi-turn ease-out spin.
 - Card/activity hover transitions: approximately 200–250 ms.
 - Disable non-essential animation under `prefers-reduced-motion: reduce`.
-- Audio categories: tap, reveal, spin, success, loss.
+- Sound-effect categories: tap, reveal, spin, success, loss.
+- Background music uses low-volume original Web Audio arrangements. Soft Ambient, Rainy Lo-fi, Tropical Dusk, and Starlight differ through chord sets, oscillator shapes, timing, register, and envelope.
+- Players select one of the four fixed music types in the sidebar; switching type fades the current arrangement before starting the new one.
+- Sound effects and background music have separate controls and saved preferences.
 - Never play audio when muted, and never require audio to understand a result.
 
 ## 9. Parity review matrix

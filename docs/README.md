@@ -9,6 +9,7 @@ This folder defines how to reproduce the existing LittlePlay application as a ma
 3. [`PREREQUISITES.md`](PREREQUISITES.md) — accounts, tools, services, and decisions needed before development.
 4. [`SETUP.md`](SETUP.md) — initialize the application, environment, database, storage, and authentication.
 5. [`DEVELOPMENT.md`](DEVELOPMENT.md) — implementation architecture, work phases, validation, and release checklist.
+6. [`CHANGELOG.md`](CHANGELOG.md) — implemented changes and the source files that own them.
 
 ## Rebuild objective
 
@@ -19,6 +20,10 @@ The objective is behavioural and visual parity with the existing production appl
 - Preserve light and dark neumorphic styling.
 - Preserve the collapsible application chrome.
 - Preserve every game rule, quiz flow, and admin control.
+- Preserve the owner-only weighted Wheel Spinner editor and its wheel-only presentation route without exposing weights or mode to public clients.
+- Preserve separate sound-effect, music mute, and player-selected music-type preferences.
+- Preserve the four fixed original generated music arrangements and the player-side music selector; there is no music editor in the admin area.
+- Preserve the owner-managed Slide Room library, including image/PDF decks and one active presentation at a time.
 - Refactor the large browser script into typed React components, hooks, services, and route handlers.
 
 ## Recommended target stack

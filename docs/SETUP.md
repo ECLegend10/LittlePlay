@@ -50,6 +50,7 @@ src/
       pick-a-card/page.tsx
       slides/page.tsx
       wheel/page.tsx
+      wheel-only/page.tsx
       this-or-that/page.tsx
       quiz/page.tsx
       quiz/play/page.tsx
@@ -59,19 +60,26 @@ src/
     admin/
       layout.tsx
       page.tsx
+      wheel/page.tsx
+      slides/page.tsx
       settings/page.tsx
       quiz/page.tsx
       words/page.tsx
     api/
       settings/route.ts
+      slides/route.ts
+      secret-wheel/route.ts
       quiz/route.ts
       spy-word/route.ts
       session/route.ts
       admin/settings/route.ts
       admin/quiz/route.ts
+      admin/slides/route.ts
+      admin/secret-wheel/route.ts
       admin/spy-vault/route.ts
       admin/upload/route.ts
       images/[key]/route.ts
+      files/[key]/route.ts
     layout.tsx
     globals.css
   components/
@@ -126,7 +134,7 @@ Implement Auth.js or the hosting identity adapter. Create a server-only `require
 
 ## 8. Configure database and migrations
 
-Create the three logical tables:
+Create the five active logical tables:
 
 ```sql
 CREATE TABLE quizzes (
@@ -149,6 +157,20 @@ CREATE TABLE spy_vault (
   revision INTEGER NOT NULL DEFAULT 1,
   updated_by TEXT NOT NULL
 );
+
+CREATE TABLE secret_wheels (
+  id TEXT PRIMARY KEY,
+  data TEXT NOT NULL,
+  revision INTEGER NOT NULL DEFAULT 1,
+  updated_by TEXT NOT NULL
+);
+
+CREATE TABLE slide_libraries (
+  id TEXT PRIMARY KEY,
+  data TEXT NOT NULL,
+  revision INTEGER NOT NULL DEFAULT 1,
+  updated_by TEXT NOT NULL
+);
 ```
 
 Generate and apply migrations using the selected Drizzle adapter:
@@ -158,16 +180,17 @@ pnpm drizzle-kit generate
 pnpm drizzle-kit migrate
 ```
 
-Seed default settings and Spy Game words. Quiz may start as an unpublished five-question template.
+Seed default settings and Spy Game words. Quiz may start as an unpublished five-question template. The private wheel and slide library may be created lazily on the owner's first save. The four generated music arrangements remain code-defined and need no database rows.
 
-## 9. Configure image storage
+## 9. Configure media storage
 
-- Implement `putQuizImage(bytes, contentType)` and `getQuizImage(key)` behind a storage interface.
-- Allow PNG, JPEG, and WebP only.
-- Enforce 5 MB by header and streamed byte count.
+- Implement image and PDF put/get operations behind a storage interface.
+- Allow PNG, JPEG, and WebP for quiz and slide images; allow PDF only for Slide Room decks.
+- Enforce 5 MB for images and 25 MB for PDFs by header and streamed byte count.
 - Validate magic bytes before upload.
 - Generate server-side random filenames.
 - Set correct content type and caching headers when serving.
+- Support HTTP byte-range responses for PDFs so embedded viewers can request only the required portions.
 
 ## 10. Add scripts
 
@@ -196,6 +219,8 @@ pnpm dev
 ```
 
 Open <http://localhost:3000>. Verify the anonymous player experience, then sign in with the configured owner email and verify all admin routes.
+
+The four chill soundtracks are generated locally with the Web Audio API. They require no media file, CDN, or music licence. Browsers block autoplay, so music begins only after the first user interaction when the music preference is enabled.
 
 ## 12. Initial verification
 

@@ -1,6 +1,6 @@
 # LittlePlay
 
-LittlePlay is a responsive, multilingual party-game hub with nine playable modules, light/dark themes, optional sound effects, a quiz-only sharing mode, and an owner-only administration area.
+LittlePlay is a responsive, multilingual party-game hub with nine public modules, an owner-configured weighted wheel with a safe wheel-only presentation page, light/dark themes, separate sound controls, four selectable original music arrangements, a quiz-only sharing mode, and an owner-only administration area. Its Slide Room presents one administrator-selected image or PDF deck at a time.
 
 The current hosted implementation uses Next.js through Vinext and Cloudflare. The documents in [`docs/`](docs/) are the source of truth for rebuilding the same product as a clean, native Next.js App Router application while preserving its visual design, routes, modules, and behaviour.
 
